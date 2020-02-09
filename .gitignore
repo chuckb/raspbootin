@@ -3,4 +3,6 @@
 *.o
 *.elf
 *.img
+*.map
+.gradle
 raspbootcom/raspbootcom

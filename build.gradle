@@ -1,0 +1,9 @@
+task build {
+  dependsOn "raspbootcom:make"
+  dependsOn "raspbootin2:make"
+}
+
+task clean {
+  dependsOn "raspbootcom:clean"
+  dependsOn "raspbootin2:clean"
+}

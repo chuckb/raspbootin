@@ -1,0 +1,9 @@
+plugins {
+  id 'org.ysb33r.gnumake' version '1.1.1'
+}
+
+import org.ysb33r.gradle.gnumake.GnuMakeBuild
+
+task clean (type:GnuMakeBuild) {
+  targets 'clean'
+}

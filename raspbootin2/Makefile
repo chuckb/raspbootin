@@ -55,6 +55,7 @@ $(KRNL).elf : $(OBJECTS) $(LINKER)
 
 # Rule to clean files.
 clean : 
-	rm *.o
-	rm $(KRNL).img $(KRNL).elf $(KRNL)
-	rm $(KRNL).list $(KRNL).map
+	rm -f *.o
+	rm -f $(KRNL).img $(KRNL).elf
+	rm -f $(KRNL).list $(KRNL).map
+	rm -f $(KRNL)
