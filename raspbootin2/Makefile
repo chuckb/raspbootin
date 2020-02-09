@@ -5,7 +5,7 @@ AS = $(ARM)-as
 #ASOPTS=-march=arm -mcpu=arm1176jzf-s
 ASOPTS=-march=armv6 -mcpu=arm1176jzf-s -g
 LDOPTS=
-CFLAGS=-std=c99 -Wall -pedantic -g
+CFLAGS=-std=c99 -Wall -pedantic -g -O0
 
 KRNL=kernel
 

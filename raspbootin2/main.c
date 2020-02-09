@@ -19,6 +19,11 @@ int main ()
     uart_puts("\r\n#############\r\n");
 
 again:
+    // Drain any junk before receiving
+    while(uart_check()) {
+      uart_recv();
+    }
+
     // send the start-code for the raspbootcom-application
     uart_puts("\x03\x03\x03");
     
@@ -28,7 +33,6 @@ again:
     size |= uart_recv() << 8;
     size |= uart_recv() << 16;
     size |= uart_recv() << 24;
-        
     
     // the kernel is too big
     if (0x8000 + size > LOADER_ADDR) 
@@ -40,7 +44,7 @@ again:
     {
         uart_puts("OK");
     }
-    
+
     // get kernel
     uint8_t *kernel = (uint8_t*)0x8000;
     while(size > 0) 
@@ -50,8 +54,11 @@ again:
 	    size--;
     }
 
-    // Kernel is loaded at 0x8000, call it via function pointer
+    // All good...give user hope!
     uart_puts("boot...");
+    uart_flush();
+
+    // Kernel is loaded at 0x8000, call it via function pointer
     BOOTUP(0x8000);
 }
 
