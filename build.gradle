@@ -7,3 +7,8 @@ task clean {
   dependsOn "raspbootcom:clean"
   dependsOn "raspbootin2:clean"
 }
+
+task buildTarget {
+  dependsOn "raspbootcom:make"
+  dependsOn "raspbootin2:buildTarget"
+}

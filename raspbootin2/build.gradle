@@ -2,8 +2,22 @@ plugins {
   id 'org.ysb33r.gnumake' version '1.1.1'
 }
 
+task setProps {
+  project.ext {
+    if (!project.hasProperty('target')) {
+      target = 'rpi'
+    }
+  }
+}
+
+
 import org.ysb33r.gradle.gnumake.GnuMakeBuild
 
 task clean (type:GnuMakeBuild) {
   targets 'clean'
+}
+
+task buildTarget (type:GnuMakeBuild) {
+  dependsOn setProps
+  targets 'clean', project.ext.target
 }
