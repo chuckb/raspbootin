@@ -8,10 +8,11 @@ configurations {
 }
 
 artifacts {
-  executable file:file("rasbootcom"), builtBy: "make"
+  executable file: make.executable, builtBy: "make"
 }
 
 make {
+  ext.executable = file("rasbootcom")
   description "Build the host serial bootloader process."
 /*
   makeOutputs {
