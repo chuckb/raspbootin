@@ -7,12 +7,8 @@ configurations {
   executable
 }
 
-artifacts {
-  executable file: make.executable, builtBy: "make"
-}
-
 make {
-  ext.executable = file("rasbootcom")
+  ext.exe = file("rasbootcom")
   description "Build the host serial bootloader process."
 /*
   makeOutputs {
@@ -22,6 +18,10 @@ make {
     } 
   }
 */
+}
+
+artifacts {
+  executable file: make.exe, builtBy: "make"
 }
 
 import org.ysb33r.gradle.gnumake.GnuMakeBuild
