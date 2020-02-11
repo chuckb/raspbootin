@@ -2,14 +2,25 @@ plugins {
   id 'org.ysb33r.gnumake' version '1.1.1'
 }
 
+configurations {
+  //declaring new configuration that will be used to associate with artifacts
+  executable
+}
+
+artifacts.add("executable", file("rasbootcom")) {
+  builtBy "make"
+}
+
 make {
   description "Build the host serial bootloader process."
+/*
   makeOutputs {
     files {
       //TODO: Does this have an exe on windows? Probably
       project.file("raspbootcom")
     } 
   }
+*/
 }
 
 import org.ysb33r.gradle.gnumake.GnuMakeBuild

@@ -1,3 +1,8 @@
+allprojects {
+  group = 'com.github.chuckb.raspbootin'
+//  version = '1.1'
+}
+
 task build {
   dependsOn "raspbootcom:make"
   dependsOn "raspbootin2:make"

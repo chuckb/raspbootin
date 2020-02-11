@@ -10,16 +10,19 @@ task setProps {
   }
 }
 
+configurations {
+  //declaring new configuration that will be used to associate with artifacts
+  executable
+}
+
+artifacts.add("executable", file("kernel.img")) {
+  builtBy "make"
+}
+
 make {
   dependsOn setProps
   description "Build a bootloader for a specific target (set ext.target);"
   targets 'clean', project.ext.target
-
-  makeOutputs {
-    files {
-      project.file("kernel.img")
-    } 
-  }
 }
 
 import org.ysb33r.gradle.gnumake.GnuMakeBuild
