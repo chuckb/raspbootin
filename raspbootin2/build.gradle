@@ -10,14 +10,21 @@ task setProps {
   }
 }
 
+make {
+  dependsOn setProps
+  description "Build a bootloader for a specific target (set ext.target);"
+  targets 'clean', project.ext.target
+
+  makeOutputs {
+    files {
+      project.file("kernel.img")
+    } 
+  }
+}
 
 import org.ysb33r.gradle.gnumake.GnuMakeBuild
 
 task clean (type:GnuMakeBuild) {
+  description "Clean all build artifacts."
   targets 'clean'
-}
-
-task buildTarget (type:GnuMakeBuild) {
-  dependsOn setProps
-  targets 'clean', project.ext.target
 }

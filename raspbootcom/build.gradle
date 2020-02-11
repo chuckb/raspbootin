@@ -2,6 +2,16 @@ plugins {
   id 'org.ysb33r.gnumake' version '1.1.1'
 }
 
+make {
+  description "Build the host serial bootloader process."
+  makeOutputs {
+    files {
+      //TODO: Does this have an exe on windows? Probably
+      project.file("raspbootcom")
+    } 
+  }
+}
+
 import org.ysb33r.gradle.gnumake.GnuMakeBuild
 
 task clean (type:GnuMakeBuild) {
