@@ -1,4 +1,3 @@
-rootProject.name="raspbootin"
 allprojects {
   group = "com.github.chuckb.raspbootin"
 }
