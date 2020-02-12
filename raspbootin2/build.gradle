@@ -21,7 +21,10 @@ make {
   description "Build a bootloader for a specific target (set ext.target);"
   targets 'clean', project.ext.target
   makeOutputs {
-    file(project.file("kernel.img"))
+    file("kernel.img")
+  }
+  makeInputs {
+    files("**/*.c", "**/*.h", "**/*.s")
   }
 }
 

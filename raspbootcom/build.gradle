@@ -11,7 +11,10 @@ configurations {
 make {
   description "Build the host serial bootloader process."
   makeOutputs {
-    file(project.file("raspbootcom"))
+    file("raspbootcom")
+  }
+  makeInputs {
+    files("**/*.cc", "**/*.h")
   }
 }
 
