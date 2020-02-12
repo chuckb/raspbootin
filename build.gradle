@@ -1,5 +1,7 @@
-allprojects {
-  group = "com.github.chuckb"
+group = "com.github.chuckb"
+
+subprojects {
+  group = "com.github.chuckb.raspbootin"
 //  version = '1.1'
 }
 
