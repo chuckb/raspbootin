@@ -1,4 +1,5 @@
 plugins {
+  id 'base'
   id 'org.ysb33r.gnumake' version '1.1.1'
 }
 
@@ -15,19 +16,30 @@ configurations {
   executable
 }
 
-artifacts.add("executable", file("kernel.img")) {
-  builtBy "make"
-}
-
 make {
   dependsOn setProps
   description "Build a bootloader for a specific target (set ext.target);"
   targets 'clean', project.ext.target
+  makeOutputs {
+    file(project.file("kernel.img"))
+  }
+}
+
+artifacts {
+  executable make.outputs.getFiles().first()
 }
 
 import org.ysb33r.gradle.gnumake.GnuMakeBuild
 
-task clean (type:GnuMakeBuild) {
+task makeClean (type:GnuMakeBuild) {
   description "Clean all build artifacts."
   targets 'clean'
+}
+
+clean {
+  dependsOn makeClean
+}
+
+build {
+  dependsOn make
 }

@@ -1,4 +1,5 @@
 plugins {
+  id 'base'
   id 'org.ysb33r.gnumake' version '1.1.1'
 }
 
@@ -8,24 +9,27 @@ configurations {
 }
 
 make {
-  ext.exe = file("rasbootcom")
   description "Build the host serial bootloader process."
-/*
   makeOutputs {
-    files {
-      //TODO: Does this have an exe on windows? Probably
-      project.file("raspbootcom")
-    } 
+    file(project.file("raspbootcom"))
   }
-*/
 }
 
 artifacts {
-  executable file: make.exe, builtBy: "make"
+  executable make.outputs.getFiles().first()
 }
 
 import org.ysb33r.gradle.gnumake.GnuMakeBuild
 
-task clean (type:GnuMakeBuild) {
+task makeClean (type:GnuMakeBuild) {
+  descripton "Clean all build artifacts."
   targets 'clean'
+}
+
+clean {
+  dependsOn makeClean
+}
+
+build {
+  dependsOn make
 }
