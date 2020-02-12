@@ -3,6 +3,8 @@ plugins {
   id 'org.ysb33r.gnumake' version '1.1.1'
 }
 
+group = "com.github.chuckb.raspbootin"
+
 task setProps {
   project.ext {
     if (!project.hasProperty('target')) {
