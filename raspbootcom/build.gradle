@@ -22,7 +22,7 @@ artifacts {
 import org.ysb33r.gradle.gnumake.GnuMakeBuild
 
 task makeClean (type:GnuMakeBuild) {
-  descripton "Clean all build artifacts."
+  description "Clean all build artifacts."
   targets 'clean'
 }
 
