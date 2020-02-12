@@ -1,1 +1,3 @@
-group = "com.github.chuckb"
+allprojects {
+  group = "com.github.chuckb.raspbootin"
+}

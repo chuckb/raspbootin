@@ -1,3 +1,2 @@
-rootProject.name = "raspbootin"
 include "raspbootcom"
 include "raspbootin2"
