@@ -30,7 +30,7 @@ The kernel is read fresh every time it is send so you do not need to restart Ras
 
 ## Compiling
 
-The build system is verry simple and the only thing configurable is the location of the arm cross compiler. By default the raspbootin/Makefile assumes you build your cross-compiler with PREFIX = /usr/local/cross and TARGET = arm-none-eabi. If that is not the case then you can override by setting PREFIX or ARMGNU in your environment:
+The build system is very simple and the only thing configurable is the location of the arm cross compiler. By default the raspbootin/Makefile assumes you build your cross-compiler with PREFIX = /usr/local/cross and TARGET = arm-none-eabi. If that is not the case then you can override by setting PREFIX or ARMGNU in your environment:
 
 ```
 export PREFIX=/usr/local/cross
@@ -44,6 +44,15 @@ Other than that simply type
 make
 ```
 and it will build both Raspbootin and Raspbootcom.
+
+Gradle compatible builds have been added to this project. Gradle defers to the makefile, but one can include
+this project as a source dependency so that another project can consume these artifacts as built on the host.
+To build:
+```
+./gradlew assemble
+```
+
+To include as a source dependency, see [this example](https://github.com/chuckb/sourcedep/blob/master/build.gradle)
 
 ## Usage:
 
