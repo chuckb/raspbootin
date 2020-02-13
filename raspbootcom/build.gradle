@@ -21,7 +21,9 @@ make {
 }
 
 artifacts {
-  executable file: make.outputs.getFiles().first(), builtBy: make
+  add("executable", make.outputs.getFiles().first()) {
+    builtBy(make)
+  }
 }
 
 import org.ysb33r.gradle.gnumake.GnuMakeBuild
