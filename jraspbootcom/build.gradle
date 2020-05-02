@@ -1,0 +1,19 @@
+plugins {
+  id 'java'
+  id 'application'
+}
+
+mainClassName = 'com.github.chuckb.raspbootin.JRaspBootCom'
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  implementation 'com.beust:jcommander:1.72'
+  implementation 'com.fazecast:jSerialComm:[2.0.0,3.0.0)'
+}
+
+task wrapper(type: Wrapper) {
+   gradleVersion = '5.6.4'
+}
