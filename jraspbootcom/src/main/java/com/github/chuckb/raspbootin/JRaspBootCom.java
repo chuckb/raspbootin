@@ -10,6 +10,8 @@ import java.util.Objects;
 import com.fazecast.jSerialComm.*;
 
 public class JRaspBootCom {
+  private final int MAXSIZE = 0x200000;
+  
   /**
    * Entry point for boot loader driver application
    * 
@@ -51,6 +53,15 @@ public class JRaspBootCom {
       File file = new File(runtimeSettings.getBootImage());
       if (!file.exists() || !file.isFile() || file.length() == 0) {
         throw new Exception(String.format("File %s not found", runtimeSettings.getBootImage()));
+      }
+
+      // Check that the file size is within limits
+      if (file.length() > MAXSIZE) {
+        throw new Exception(
+          String.format("kernel %s too big [%d bytes of %d allowable]", 
+            runtimeSettings.getBootImage(), 
+            file.length(), 
+            MAXSIZE));
       }
 
       // Open the serial port

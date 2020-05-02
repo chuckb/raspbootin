@@ -2,6 +2,10 @@ package com.github.chuckb.raspbootin;
 
 import com.beust.jcommander.*;
 
+/**
+ * Encapsulate command line arguments into a class that can be referenced
+ * by the main application.
+ */
 public class RuntimeSettings {
   // Command line args
   private String[] argv;

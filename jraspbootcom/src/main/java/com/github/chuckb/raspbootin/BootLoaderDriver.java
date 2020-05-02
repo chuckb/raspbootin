@@ -5,6 +5,11 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
 
+/**
+ * Logic to boot load a remote target by listening for start sequence, and then sending
+ * a binary image file. Also act as a serial terminal by forwarding keystrokes from the
+ * target and printing any received data, after booting, from the target.
+ */
 public class BootLoaderDriver {
   private static final int NOBYTE = 0xFFFFFFFF;
   private final InputStream imageInputStream;
