@@ -13,52 +13,6 @@
 #include "platform.h"
 
 /**
- * \brief put a 32-bit word to a specific address
- * \param[in] r0 the address to write to
- * \param[in] r1 the value for writing
- * \author David Welch
- **/
-extern void PUT32 ( unsigned int, unsigned int );
-/**
- * \brief get a 32-bit word from an address
- * \param[in] r0 the address to read from
- * \return the read value
- * \author David Welch
- **/
-extern unsigned int GET32 ( unsigned int );
-/**
- * \brief jump; just waste time
- * \author David Welch
- **/
-extern void dummy ( unsigned int );
-
-/**
- * \brief jump to the specified address
- * \param[in] r0 the address to jump to
- * \author Stefan Naumann
- **/
-extern void BOOTUP ( unsigned int );
-
-#define GPFSEL1         (PBASE+0x00200004)
-#define GPSET0          (PBASE+0x0020001C)
-#define GPCLR0          (PBASE+0x00200028)
-#define GPPUD           (PBASE+0x00200094)
-#define GPPUDCLK0       (PBASE+0x00200098)
-
-#define AUX_ENABLES     (PBASE+0x00215004)
-#define AUX_MU_IO_REG   (PBASE+0x00215040)
-#define AUX_MU_IER_REG  (PBASE+0x00215044)
-#define AUX_MU_IIR_REG  (PBASE+0x00215048)
-#define AUX_MU_LCR_REG  (PBASE+0x0021504C)
-#define AUX_MU_MCR_REG  (PBASE+0x00215050)
-#define AUX_MU_LSR_REG  (PBASE+0x00215054)
-#define AUX_MU_MSR_REG  (PBASE+0x00215058)
-#define AUX_MU_SCRATCH  (PBASE+0x0021505C)
-#define AUX_MU_CNTL_REG (PBASE+0x00215060)
-#define AUX_MU_STAT_REG (PBASE+0x00215064)
-#define AUX_MU_BAUD_REG (PBASE+0x00215068)
-
-/**
  * \brief return the content of the control register
  * \author David Welch
  **/
@@ -69,6 +23,13 @@ unsigned int uart_lcr ( void );
  * \author David Welch
  **/
 unsigned int uart_recv ( void );
+/**
+ * \brief return the currently received value from the UART-controller
+ *        or 0xFFFFFFFF if the timeout_ms excedded
+ * \note does not create an input-queue!
+ * \author Chuck Benedict
+ **/
+unsigned int uart_recv_timeout ( unsigned int timeout_ms );
 /**
  * \brief check for a new character (return 1 if available, 0 if not)
  * \author David Welch
@@ -97,6 +58,11 @@ void uart_flush ( void );
  * \author David Welch
  **/
 void uart_init ( void );
+/**
+ * \brief clear the UART fifo buffers
+ * \author Chuck Benedict
+ **/
+void uart_clear_fifos ( void );
 
 #endif
 

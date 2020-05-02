@@ -17,6 +17,23 @@ unsigned int uart_recv ( void )
     return(GET32(AUX_MU_IO_REG)&0xFF);
 }
 //------------------------------------------------------------------------
+unsigned int uart_recv_timeout ( unsigned int timeout_ms )
+{
+    unsigned int ra;
+    unsigned int rb;
+
+    rb = GET32(ARM_TIMER_CNT);
+    ra = GET32(ARM_TIMER_CNT);
+    while((ra-rb) < timeout_ms)
+    {
+        if(GET32(AUX_MU_LSR_REG)&0x01) {
+          return(GET32(AUX_MU_IO_REG)&0xFF);
+        };
+        ra = GET32(ARM_TIMER_CNT);
+    }
+    return 0xFFFFFFFF;
+}
+//------------------------------------------------------------------------
 unsigned int uart_check ( void )
 {
     if(GET32(AUX_MU_LSR_REG)&0x01) return(1);
@@ -54,6 +71,7 @@ void uart_init ( void )
 {
     unsigned int ra;
 
+    // Enable the mini UART
     PUT32(AUX_ENABLES,1);
     PUT32(AUX_MU_IER_REG,0);
     PUT32(AUX_MU_CNTL_REG,0);
@@ -74,4 +92,14 @@ void uart_init ( void )
     for(ra=0;ra<150;ra++) dummy(ra);
     PUT32(GPPUDCLK0,0);
     PUT32(AUX_MU_CNTL_REG,3);
+
+    // Set the ARM timer for millisecond resolution
+    // We do this for timeout processing
+    PUT32(ARM_TIMER_CTL, 0x00F90000);   // Set prescale
+    PUT32(ARM_TIMER_CTL, 0x00F90200);   // Prescale = 0xF9 or 249; Freq = 250MHz / (249 + 1) = 1 microsecond
+}
+//------------------------------------------------------------------------
+void uart_clear_fifos ( void )
+{
+  PUT32(AUX_MU_IIR_REG,0xC6);
 }

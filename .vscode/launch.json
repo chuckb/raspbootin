@@ -1,0 +1,21 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "gdb",
+      "request": "attach",
+      "name": "Attach to local openocd",
+      "executable": "${workspaceRoot}/raspbootin2/kernel.elf",
+      "gdbpath": "arm-none-eabi-gdb",
+      "target": ":3333",
+      "remote": true,
+      "cwd": "${workspaceRoot}",
+      "valuesFormatting": "parseText",
+      "printCalls": true, 
+      "showDevDebugOutput": true
+    }
+  ]
+}

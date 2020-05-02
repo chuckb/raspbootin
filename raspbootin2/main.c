@@ -1,4 +1,5 @@
 #include "platform.h"
+#include "jtag.h"
 #include "uart.h"
 
 #include <stdint.h>
@@ -8,6 +9,9 @@
 
 int main ()
 {
+    // init the jtag interface so we can debug
+    jtag_init();
+
     // init the uart-hardware
     uart_init();
     
@@ -29,7 +33,18 @@ again:
     
     // the size of the kernel has been received
     uint32_t size = 0;
-    size |= uart_recv();
+    uint32_t size_tmp = 0;
+    while(1) {
+      size_tmp = uart_recv_timeout(1000000);
+      if (size_tmp == 0xFFFFFFFF) {
+        // A timeout occurred...
+        // Resend the start-code for the raspbootcom-application
+        uart_puts("\x03\x03\x03");
+      } else {
+        size |= size_tmp;
+        break;
+      }
+    }
     size |= uart_recv() << 8;
     size |= uart_recv() << 16;
     size |= uart_recv() << 24;
@@ -55,8 +70,7 @@ again:
     }
 
     // All good...give user hope!
-    uart_puts("boot...");
-    uart_flush();
+    uart_puts("boot...\n");
 
     // Kernel is loaded at 0x8000, call it via function pointer
     BOOTUP(0x8000);

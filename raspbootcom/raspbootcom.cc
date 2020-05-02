@@ -150,10 +150,15 @@ void send_kernel(int fd, const char *file) {
         perror("read()");
         do_exit(fd, EXIT_FAILURE);
     }
-  	pos += len;
+    if (p[pos] == 0x03) {
+      // ignore this send character
+    } else {
+      // Advance the buffer position
+  	  pos += len;
+    }
   }
   if (ok_buf[0] != 'O' || ok_buf[1] != 'K') {
-    fprintf(stderr, "error after sending size\n");
+    fprintf(stderr, "error after sending size; got [%x, %x]\n", ok_buf[0], ok_buf[1]);
     do_exit(fd, EXIT_FAILURE);
   }
 

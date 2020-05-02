@@ -18,7 +18,4 @@ SECTIONS {
         *(.bss)
     }
 
-	/DISCARD/ : {
-		*(*)
-	}
 }
