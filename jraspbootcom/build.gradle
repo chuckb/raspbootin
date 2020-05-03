@@ -12,6 +12,16 @@ repositories {
 dependencies {
   implementation 'com.beust:jcommander:1.72'
   implementation 'com.fazecast:jSerialComm:[2.0.0,3.0.0)'
+  testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.6.2'
+  testImplementation 'org.mockito:mockito-junit-jupiter:3.3.3'
+}
+
+test {
+  useJUnitPlatform()
+  testLogging {
+    events = ["passed", "failed", "skipped"]
+    showStandardStreams = true
+  }
 }
 
 task wrapper(type: Wrapper) {
