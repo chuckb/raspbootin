@@ -2,13 +2,13 @@
 
 Simple boot-over-serial bootloader for the Raspberry Pi
 
-The Raspbootin repository contains 2 components: Raspbootin2 and Raspbootcom.
+The Raspbootin repository contains 3 components: Raspbootin2, Raspbootcom and JRaspBootCom.
 
 ## Architecture
 
-The Raspbootin2 runs on the Raspberry Pi as Operating System Kernel. Raspbootcom runs on a PC, reads __your__ Kernel and sends it over the Serial connction to the Raspberry Pi. Raspbootin2 saves the kernel to memory (0x8000) and starts running it. 
+The Raspbootin2 runs on the Raspberry Pi as Operating System Kernel. Raspbootcom or JRaspBootCom runs on a PC, reads __your__ Kernel and sends it over a serial port connection to the Raspberry Pi. Raspbootin2 saves the kernel to memory (0x8000) and starts running it. 
 
-You could use the Adafruit TTL-Cable for the serial connection or another USB-TTL-Adapter based on PC-PL2303 (no guarantees).
+You could use the [Adafruit TTL-Cable][adafruit-serial-cable] for the serial connection or another USB-TTL-Adapter based on PC-PL2303 (no guarantees).
 
 ## Raspbootin2
 
@@ -24,9 +24,18 @@ Raspbootin2 is compatible to Raspbootcom. Special thanks to David Welch (dwelch@
 
 ## Raspbootcom
 
-Raspbootcom is a simple boot server and terminal program for the other side of the serial connection. You need to run this on another computer, the one the serial port of your Raspberry Pi is conneted to. On start Raspbootcom is in terminal mode. Any input on stdin is passed to the Raspberry Pi and any reply from the Raspberry Pi is printed to stdout. The Raspbootin2 bootloader will send 3 breaks (0x03) over the serial connection when it wants to boot a kernel and Raspbootcom then switches into kernel sending mode, reads the kernel from disk and sends it to the Raspberry Pi. After that it goes back into terminal mode so you can see the output from the Raspberry Pi and interact with it.
+Raspbootcom is a simple boot server and terminal program for the other side of the serial connection. You need to run this on another computer, the one the serial port of your Raspberry Pi is connected to. On start, Raspbootcom is in terminal mode. Any input on stdin is passed to the Raspberry Pi and any reply from the Raspberry Pi is printed to stdout. The Raspbootin2 bootloader will send 3 breaks (0x03) over the serial connection when it wants to boot a kernel, and Raspbootcom then switches into kernel sending mode, reads the kernel from disk and sends it to the Raspberry Pi. After that it goes back into terminal mode so you can see the output from the Raspberry Pi and interact with it.
 
-The kernel is read fresh every time it is send so you do not need to restart Raspbootcom every time the kernel image changes. My Raspberry Pi gets its power over the serial connection so unplugging and repluging the USB serial converter is how it reboots. Raspbootcom also survives unplugging and replugging of an USB serial converter and will automatically reopen the device when you replug it. 
+The kernel is read fresh every time it is send so you do not need to restart Raspbootcom every time the kernel image changes. My Raspberry Pi gets its power over the serial connection so unplugging and replugging the USB serial converter is how it reboots. Raspbootcom also survives unplugging and replugging of an USB serial converter and will automatically reopen the device when you replug it. 
+
+Raspbootcom is built with the gcc toolchain and is cross platform. It has been tested on Linux, OSX, and Windows 10.
+
+## JRaspBootCom
+
+This is a Java version of the simple boot server. Running `gradlew shadowJar` will create a fat jar called `./build/libs/jraspbootcom-all.jar`. This jar contains all dependencies that will enable the boot server to run cross platform (Linux, OSX, and Windows) without building the application. You can run the application as follows:
+```bash
+java -jar jraspbootcom-all.jar -p /dev/tty.SLAB_USBtoUART kernel.img
+```
 
 ## Compiling
 
@@ -60,3 +69,5 @@ To include as a source dependency, see [this example](https://github.com/chuckb/
 - make sure to put the Kernel to address 0x02000000 (in config.txt add ```kernel_address=0x02000000```)
 - Run ```raspbootcom /dev/ttyUSB0 /where/you/have/your/kernel.img```.
 - Turn on the Raspberry Pi.
+
+[adafruit-serial-cable]:  https://www.adafruit.com/product/954
