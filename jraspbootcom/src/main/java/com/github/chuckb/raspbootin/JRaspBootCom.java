@@ -18,6 +18,9 @@ public class JRaspBootCom {
    * @param argv  Args from the command line
    */
   public static void main(String ... argv) throws Exception, FileNotFoundException {
+    System.err.println("JRaspBootCom Raspberry Pi Boot Loader Version 1.0");
+    System.err.println("http://github.com/chuckb/raspbootin");
+    System.err.println("Copyright (c) Chuck Benedict 2020");
     JRaspBootCom main = new JRaspBootCom();
     RuntimeSettings runtimeSettings = new RuntimeSettings(argv);
     if (runtimeSettings.parse()) {
