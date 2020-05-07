@@ -11,6 +11,26 @@
  * from the original raspbootin
  **/
 start:
+#if defined(PLATFORM_RPI2) || defined(PLATFORM_RPI3)
+  /* Check for HYP mode */
+  mrs r0, cpsr_all    ;@move FROM coprocessor reg to ARM register Current Program Status Register
+  and r0, r0, #0x1F
+  mov r8, #0x1A
+  cmp r0, r8
+  beq overHyped ;@branch if equal als r0 en r8 gelijk zijn jump naar overHyped
+  b continueBoot ;@branch(=jump)
+
+overHyped: /* Get out of HYP mode */ ;@HYP = is een modus voor virtualization
+  ldr r1, =continueBoot ;@load addres van continueBoot routine in R1
+  msr ELR_hyp, r1     ;@ move ARM register to coprocessor register
+  mrs r1, cpsr_all    
+  and r1, r1, #0x1f   ;@ CPSR_MODE_MASK
+  orr r1, r1, #0x13   ;@ CPSR_MODE_SUPERVISOR
+  msr SPSR_hyp, r1
+  eret                ;@return
+
+continueBoot:
+#endif
 	// Setup the stack.
 	mov	sp, #0x8000
 	bl main

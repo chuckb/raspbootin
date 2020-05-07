@@ -9,6 +9,9 @@
   #elif defined PLATFORM_RPI2
       #define PBASE 0x3F000000
       #define PNAME "Raspberry Pi 2"
+  #elif defined PLATFORM_RPI3
+      #define PBASE 0x3F000000
+      #define PNAME "Raspberry Pi 3"
   #endif
   /**
    * \brief put a 32-bit word to a specific address
