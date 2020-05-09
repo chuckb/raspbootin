@@ -57,11 +57,11 @@ public class BootLoaderDriver {
    * console and the target.
    * @throws IOException
    */
-  public void run() throws IOException {
+  public void run() throws IOException, InterruptedException {
     int breaks = 0;                     // The number of 0x03 breaks received from the target
-    boolean sent = false;
-    int targetInputByte = NOBYTE;       // This means no byte
-    int auxillaryInputByte = NOBYTE;    // This means no byte
+    boolean sent = false;               // Whether the image has been sent or not
+    int targetInputByte = NOBYTE;       // Start with no target data for the user
+    int auxillaryInputByte = NOBYTE;    // Start with no user data for the target
 
     while(true) {
       // Scan input sources and update state variables
@@ -94,7 +94,7 @@ public class BootLoaderDriver {
         auxillaryInputByte = NOBYTE;
       }
 
-      // If we have a byte from the target, forward it on
+      // If we have a byte from the target, forward it on to the user
       if (targetInputByte != NOBYTE) {
         forwardingStream.write(targetInputByte);
         targetInputByte = NOBYTE;
@@ -107,12 +107,19 @@ public class BootLoaderDriver {
    * 
    * @throws IOException
    */
-  private void sendImage() throws IOException {
+  private void sendImage() throws IOException, InterruptedException {
     messageStream.println(String.format("### sending kernel %s [%d byte]", imageFileName, imageSize));
     sendImageSize();
     if (receiveImageSizeReply()) {
+      int bytesSent = 0;
       while(imageInputStream.available() > 0) {
         targetOutputStream.write(imageInputStream.read());
+        bytesSent +=1;
+        // This jank solution prevents buffer overruns at 115200 baud.
+        // TODO: Fix this...awaiting suggestion from lib author.
+        if (bytesSent % 10 == 0) {
+          Thread.sleep(1);
+        }
       }
       messageStream.println("### finished sending");
     }
